@@ -29,5 +29,5 @@ d<-as.list(c[[1]])
 
 #search for all words "\\w" that are not and "n" [^n] multiple times "+"
 e<-search(d,"([^n])\\w+")
-e
+
 
