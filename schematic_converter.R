@@ -10,3 +10,4 @@ p <- lapply(v120schem[200], function(z){z[z!=""]})
 strsplit(x=p, split=" ")
 
 str_extract_all(p,"(\\d|\\w|\\.|\\-|\\+|\\,])+")
+
