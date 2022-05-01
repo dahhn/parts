@@ -26,9 +26,11 @@ a <- v120hub[49]
 
 #split up list into individual spaces and words
 b<- strsplit(x=a, split=" ")
-# regex extracts from y any [digit, word, or period, dash (-), + or line like character {2500}] as a whole word and removes white space
-c <- str_extract_all(b, "(\\d|\\w|\\.|\\-|\\+|\\x{2500})+")
 
+# regex extracts from y any [digit, word, or period, dash (-), + or line like character {2500}] as a whole word and removes white space
+#c <- str_extract_all(b, "[\\d|\\w|\\.|\\-|\\n|\\+|\\x{2500}]+")  --- will remove later. Saving for now
+c <- str_extract_all(b, "(\\S)+")
+as_data_frame(c)
 #changing to be able to more easily access elements in c
 d<-as.list(c[[1]])
 
@@ -38,11 +40,11 @@ e<-search(d,"([^n])\\w+")
 # search for any dash like characters, word characters 
 f <- search(e, "\\x{2500}|\\w")
 
-# looks for any number that is between 6 and 9 didgits
+# looks for any number that is between 6 and 9 digits
 search(f, "\\d{6,9}")
 # search for any non-digit character
 search(f, "\\D")
 # search for the column names
 search(f, "Pos|Qty|Material|Description|Codes|Remarks")
 
-
+f[1]
