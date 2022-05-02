@@ -10,3 +10,4 @@ scrub <- function(my_pdf){
     compact(a)
   }
 }
+
