@@ -1,8 +1,28 @@
-build_dataframe <- function(cleaned_data){
+#build_dataframe <- function(cleaned_data){
   #### This takes cleaned data from item_parse() and builds a dataframe row by row as well as capturing metadata
-  
-  #look for entries that matches the following: Pos, Qty, Material, Description, Codes, Remarks
-  
+library(tidyverse)  
+document <- list(metadata = list(turbine="character",
+                            doc_description="character",
+                            doc_num="character",
+                            version_description="character",
+                            last_page='number'),
+           data = tibble(position="number",
+                         quantity="number",
+                         material_no="number",
+                         description="character",
+                         remarks="character",
+                         current_page="number",
+                         id_num = "number"),
+           funcs = list())               
+
+
+#look for entries that matches the following: Pos, Qty, Material, Description, Codes, Remarks
+
+split_index <- match("Pos",(cleaned_data))
+
+metadata_vec <- cleaned_data[1:split_index-1]
+
+
   #record position for Pos as 'split_here'
   
   #take data at 'split_here' -1 and assign as a list called 'metadata'
@@ -33,4 +53,5 @@ build_dataframe <- function(cleaned_data){
   
   #iterate to next row entry
   
-}
+#}
+
