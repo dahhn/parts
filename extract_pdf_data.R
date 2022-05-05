@@ -11,10 +11,11 @@ extract_pdf_data <- function(){
   #changing to be able to more easily access elements in c
   d<-as.list(c[[1]])
   #search for all words "\\w" that are not and "n" [^n] multiple times "+"
-  e<-search(d,"([^n])\\w+")
+  e<-search(d,"([^n])\\w+", value = TRUE)
   # search for any dash like characters, word characters 
-  f <- search(e, "\\x{2500}|\\w")
+  f <- search(e, "\\x{2500}|\\w", value= TRUE)
   extracted_data <<- f
+  scrub(extracted_data)
 }
 #### Below is only for testing. Will be incorperated into another function in the future.
 
