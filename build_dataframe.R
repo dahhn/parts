@@ -1,6 +1,5 @@
 #build_dataframe <- function(cleaned_data){
   #### This takes cleaned data from item_parse() and builds a dataframe row by row as well as capturing metadata
-library(tidyverse)  
 document <- list(metadata = list(turbine="character",
                             doc_description="character",
                             doc_num="character",
@@ -18,14 +17,17 @@ document <- list(metadata = list(turbine="character",
 
 #look for entries that matches the following: Pos, Qty, Material, Description, Codes, Remarks
 
-split_index <- match("Pos",(cleaned_data))
 
-metadata_vec <- cleaned_data[1:split_index-1]
+
+
+
+
 
 
   #record position for Pos as 'split_here'
-  
+split_index <- match("Pos",(cleaned_data))  
   #take data at 'split_here' -1 and assign as a list called 'metadata'
+metadata_vec <- cleaned_data[1:split_index-1]
     #metadata:
       #turbine: concatanate first several entries: 'v116/120 2.2 Mw Mk 11D'
       #doc_description: concatanate next entries: 'Hub Illustrated Part Catalogue Document Number:'
@@ -35,12 +37,14 @@ metadata_vec <- cleaned_data[1:split_index-1]
       #last_page: as.number(126)
       ###### More metadata will need to be added for linking pages, parent material numbers and other things as needed
       ###### this metadata might be best as a totally separate list or dataframe that is linked to the entries below.
-  
+#the rest of the data to be processed stored as data_vec
+data_vec <- cleaned_data[split_index+7:length(cleaned_data)]  
   #look for the first occurance of 3 digit number after split_here. add them to column Pos
   #change to as.Number()
-  
+temp_vec <- data_vec[1:3] 
+document <- list(metadata = metadata_vec, data = tibble(pos = temp_vec[1], qty = temp_vec[2], mat_no= temp_vec[3]))
   #look for next entry. Should be a 3 digit number at max. add to Qty column as.Number()
-  
+
   #look for next entry. Should be a 6-10 digit number. add to Material column as.Number()
   
   #look for next entries. should be a series of strings. add to Description column as.List()
