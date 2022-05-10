@@ -1,7 +1,11 @@
 #install.packages("tidyverse")
 #install.packages("pdftools")
-library(tidyverse)
-library(pdftools)
+load_files <- function(){
+  library(tidyverse)
+  library(pdftools)
+  library(assertive) 
+}
+
 
 
   

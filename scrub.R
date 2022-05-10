@@ -4,11 +4,10 @@ scrub <- function(item){
   c <- gsub('(\\\\n)', " ", b) #remove \\n new line return
   d <- gsub('(c[[:punct:]])', "", c) #remove any c( characters
   e <- gsub(" ", "",d) # remove whitespace
-  cleaned_data <<- e
-  cleaned_data
+  f <- gsub("(--)$",'-',e)
+  cleaned_data <<- f
 }
 
-item_parse(f)
 
 
 
