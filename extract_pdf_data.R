@@ -14,16 +14,6 @@ extract_pdf_data <- function(){
   e<-search(d,"([^n])\\w+", value = TRUE)
   # search for any dash like characters, word characters 
   f <- search(e, "\\x{2500}|\\w", value= TRUE)
-  extracted_data <<- f
+  extracted_data <- f
   scrub(extracted_data)
 }
-#### Below is only for testing. Will be incorperated into another function in the future.
-
-# looks for any number that is between 6 and 9 digits
-search(f, "\\d{6,9}")
-# search for any non-digit character
-search(f, "\\D")
-# search for the column names
-search(f, "Pos|Qty|Material|Description|Codes|Remarks")
-
-
