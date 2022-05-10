@@ -17,13 +17,6 @@ document <- list(metadata = list(turbine="character",
 
 #look for entries that matches the following: Pos, Qty, Material, Description, Codes, Remarks
 
-
-
-
-
-
-
-
   #record position for Pos as 'split_here'
 split_index <- match("Pos",(cleaned_data))  
   #take data at 'split_here' -1 and assign as a list called 'metadata'
@@ -41,8 +34,61 @@ metadata_vec <- cleaned_data[1:split_index-1]
 data_vec <- cleaned_data[split_index+7:length(cleaned_data)]  
   #look for the first occurance of 3 digit number after split_here. add them to column Pos
   #change to as.Number()
-temp_vec <- data_vec[1:3] 
-document <- list(metadata = metadata_vec, data = tibble(pos = temp_vec[1], qty = temp_vec[2], mat_no= temp_vec[3]))
+
+############
+# looks for any number that is between 6 and 9 digits
+#part_num <- search(data_vec, "\\d{6,9}", value=TRUE)
+# search for any non-digit character
+#search(data_vec, "\\D", value=TRUE)
+# search for the column names
+############
+data_vec <- na.omit(data_vec)
+
+
+count <- c()
+position <- c()
+quantity <- c()
+material <- c()
+description <-c()
+codes <- c()
+remarks <-c()
+
+for(i in data_vec){
+  numbers<-as.numeric(grep("\\d",i, value = TRUE))
+  designation <- grep("(-\\d{3})",i, value = FALSE)
+  
+  if(count<3){
+            if(is.na(numbers)== FALSE){
+            if(count == 0 ){
+                    position <- c(position, as.numeric(i))
+                    count <- count+1 
+            }
+            else if(count == 1 ){
+                    quantity <- c(quantity, as.numeric(i))
+                    count <- count+1 
+            }
+            else if(count == 2 ){
+                    material <- c(material, as.numeric(i))
+                    count <- count+1
+            }
+            }
+  }
+    
+}
+
+######
+
+
+
+numbers<-as.numeric(grep("\\d",i, value = TRUE))
+
+designation
+paste(data_vec[9],data_vec[10])
+data_vec[18]
+#designation <- grep("(-\\d{3})",data_vec[1], value = FALSE)
+
+#description <- c(description, data_vec[6])
+
   #look for next entry. Should be a 3 digit number at max. add to Qty column as.Number()
 
   #look for next entry. Should be a 6-10 digit number. add to Material column as.Number()
@@ -59,3 +105,25 @@ document <- list(metadata = metadata_vec, data = tibble(pos = temp_vec[1], qty =
   
 #}
 
+
+
+codes <- c()
+designation_1 <- as.vector(grep("(-\\d{3}-\\d{2})",data_vec, value = FALSE))
+designation_2 <- as.vector(grep("(-\\d{3}-.._.)",data_vec, value = FALSE))
+
+designation <-sort(c(designation_1, designation_2))
+#designation_3 <- sort(designation_3)
+
+
+for(i in designation){
+  if(i %in% designation_2 == TRUE){
+    codes <-c(codes, data_vec[i])
+  } else {
+    codes <- c(codes,paste(data_vec[i],data_vec[i+1]))}
+}
+
+data_vec <- sub("(--)$",'-',data_vec)
+codes
+designation_2
+data_vec[25]
+designation
