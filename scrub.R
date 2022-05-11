@@ -5,7 +5,8 @@ scrub <- function(item){
   d <- gsub('(c[[:punct:]])', "", c) #remove any c( characters
   e <- gsub(" ", "",d) # remove whitespace
   f <- gsub("(--)$",'-',e)
-  cleaned_data <<- f
+  scrubbed <- f
+  sort_data(scrubbed)
 }
 
 
