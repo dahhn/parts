@@ -2,13 +2,46 @@
 v120hub<-pdf_text(paste0(getwd(),"/V120hub.pdf"))
 scrub(v120hub)
 
-page_num <- clean %>%
-  str_extract("(Page \\d{1,3} of)") %>%
-  str_extract("\\d{1,3}") %>%
-  unlist()%>%
-  as.numeric() 
-clean<-set_names(clean, paste0("p",page_num))
-page_num
+
+
+
+## toc = Table of Contents
+make_toc_dataframe <- function(pdf_list){
+
+index_grep <- function(regex, my_list){
+    grepl(regex, my_list)%>%
+    which()%>%
+    as.numeric()
+} 
+
+#look for which page has "Table of Contents"
+  toc_start_page <- index_grep("Table of Contents",doc_0083_9277)%>%paste0("p",.)
+  first_pg <- doc_0083_9277[toc_start_page] %>% unlist()
+#if found, then search through the document to find the start of parts  
+  toc_intro_ <- first_pg%>%index_grep("Introduction",.)
+  #modules_start<- first_pg%>%index_grep("How the IPC is Organised",.)+1
+
+x <- first_pg%>%str_trim()%>%str_split('`') #split vectors at backtics
+
+y<-x[toc_intro_:length(x)]#removes extra entries at the beginning
+
+#declare empty dataframe for table of contentse
+toc_df <- tibble(section= character(),
+                 description= character(),
+                 module_number= character(),
+                 page=character()) 
+
+#will switch to apply type function later
+for(i in y ){
+  toc_df <- rbind(i,toc_df)
+}
+
+}
+
+
+
+######### BELOW THIS IS UNTESTED ###########
+#############################################
 
 #function: build metadata table
 mk_version <- clean %>%
