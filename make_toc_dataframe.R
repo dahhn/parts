@@ -1,17 +1,11 @@
 ## toc = Table of Contents
 make_toc_dataframe <- function(pdf_list){
-   # returns the index of a grepl on a list as a number
-  index_grep <- function(regex, my_list){
-    grepl(regex, my_list) %>%
-      which() %>%
-      as.numeric()}
-  
   #look for which page has "Table of Contents"
-    start_page <- index_grep("Table of Contents",pdf_list)#%>% paste0("p",.)
+    start_page <- index_grep(pdf_list,"Table of Contents")
     #get the first page to search 
     first_pg <- pdf_list[start_page] %>% unlist()
     #find the index of 'introduction' on first page
-    intro <- first_pg %>% index_grep("Introduction",.)
+    intro <- first_pg %>% index_grep(.,"Introduction")
     
     end_page <- intro - 1
     
@@ -26,10 +20,11 @@ make_toc_dataframe <- function(pdf_list){
                      module_number = numeric(),
                      page = numeric()) 
     
-    for(i in y ){
+    for (i in y ) {
       toc_df <- toc_df %>% add_row( section = i[1],
                                     description = i[2],
                                     module_number = as.numeric(i[3]),
                                     page = as.numeric(i[4]))}
-    table_of_contents <<- toc_df %>% filter(is.na(page)==FALSE)
+    doc_namer(toc_df,"table_of_contents_")
+    #make_parts_dataframe(pdf_list[])
 }
